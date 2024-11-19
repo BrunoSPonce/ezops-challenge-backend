@@ -12,24 +12,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Login Dockerhub
-      run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       
     - name: Build the Docker image
-      run: docker build -t brunosponce/ezops-test-backend .
-
-    - name: Push to Dockerhub
-      run: docker push brunosponce/ezops-test-backend:latest
-
-    - name: Login Dockerhub
-      run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-
-    - name: Pull Docker image
-      run: sudo docker pull brunosponce/ezops-test-backend:latest
+      run: docker build -t ezops-test-backend .
 
     - name: Delete Old docker container
       run: sudo docker rm -f ezops-test-backend || true
 
     - name: Run Docker Container
-      run: sudo docker run -d -p 3000:3000 --name ezops-test-backend brunosponce/ezops-test-backend
+      run: sudo docker run -d -p 3000:3000 --name ezops-test-backend ezops-test-backend
