@@ -19,6 +19,16 @@ jobs:
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       
     - name: Build the Docker image
-      run: docker build -t ezops-bruno-test .
+      run: docker build -t ezops-test-backend .
+
     - name: Push to Dockerhub
-      run: docker run -p 3000:3000 ezops-bruno-test
+      run: docker push brunosponce/ezops-test-backend:latest
+
+    - name: Pull Docker image
+      run: sudo docker pull brunosponce/ezops-test-backend:latest
+
+    - name: Delete Old docker container
+      run: sudo docker rm -f ezops-test-backend || true
+
+    - name: Run Docker Container
+      run: sudo docker run -d -p 3000:3000 --name ezops-test-backend brunosponce/ezops-test-backend
