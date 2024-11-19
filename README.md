@@ -1,1 +1,0 @@
-# ezops-challenge-backend
