@@ -1,19 +1,14 @@
-#dummy message
-FROM node:latest
 
-ARG NODE_ENV
-ARG OPENAI_API_KEY
+FROM node:18
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+RUN npm install --only=production
 
 COPY . .
 
 EXPOSE 3000
 
-ENV OPENAI_API_KEY $OPENAI_API_KEY
-ENV NODE_ENV $NODE_ENV
-
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
