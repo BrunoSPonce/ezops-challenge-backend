@@ -14,6 +14,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: setup docker env
+      run: eval $(minikube -p minikube docker-env --shell=bash)
+
     - name: Build the Docker image
       run: sudo docker build -t node-app:v1 .
 
