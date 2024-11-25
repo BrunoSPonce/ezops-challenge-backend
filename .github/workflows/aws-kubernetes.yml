@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: set up the Docker environment
-      run: eval $(minikube docker-env)
+      run: sudo eval $(minikube docker-env)
 
     - name: Build the Docker image
       run: sudo docker build -t ezops-test-backend .
