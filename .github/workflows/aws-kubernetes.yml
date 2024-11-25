@@ -1,4 +1,4 @@
-name: Deploy to AWS (CDK)
+name: Deploy to kubernetes ec2
 
 on:
   push:
@@ -7,16 +7,21 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: 
+      - self-hosted
+      - kubernetes
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      
+    - name: Build the Docker image
+      run: sudo docker build -t ezops-test-backend .
 
-      - name: Deploy CDK stack
-        working-directory: ./
-        run: sudo docker ps
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.REGION }}
+    - name: Delete Old kubectl running replicas
+      run: sudo kubectl delete deployment node-app-deployment
+
+    - name: Run kubectl apply
+      run: sudo kubectl apply -f deployment.yaml
+
+    - name: check pods creating
+      run: sudo kubectl get pods  
